@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A903073A25A070B500743291 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903073925A070B500743291 /* AppDelegate.swift */; };
 		A903073C25A070B500743291 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903073B25A070B500743291 /* SceneDelegate.swift */; };
-		A903073E25A070B500743291 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903073D25A070B500743291 /* ContentView.swift */; };
+		A903073E25A070B500743291 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903073D25A070B500743291 /* LoginView.swift */; };
 		A903074025A070B700743291 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A903073F25A070B700743291 /* Assets.xcassets */; };
 		A903074325A070B700743291 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A903074225A070B700743291 /* Preview Assets.xcassets */; };
 		A903074625A070B700743291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A903074425A070B700743291 /* LaunchScreen.storyboard */; };
@@ -18,9 +17,8 @@
 
 /* Begin PBXFileReference section */
 		A903073625A070B500743291 /* SimpleTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A903073925A070B500743291 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A903073B25A070B500743291 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A903073D25A070B500743291 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A903073D25A070B500743291 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A903073F25A070B700743291 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A903074225A070B700743291 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A903074525A070B700743291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -58,9 +56,9 @@
 		A903073825A070B500743291 /* SimpleTasks */ = {
 			isa = PBXGroup;
 			children = (
-				A903073925A070B500743291 /* AppDelegate.swift */,
 				A903073B25A070B500743291 /* SceneDelegate.swift */,
-				A903073D25A070B500743291 /* ContentView.swift */,
+				A903073D25A070B500743291 /* LoginView.swift */,
+				A9781FE625A07762002D3760 /* Services */,
 				A903073F25A070B700743291 /* Assets.xcassets */,
 				A903074425A070B700743291 /* LaunchScreen.storyboard */,
 				A903074725A070B700743291 /* Info.plist */,
@@ -75,6 +73,13 @@
 				A903074225A070B700743291 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A9781FE625A07762002D3760 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,9 +159,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A903073A25A070B500743291 /* AppDelegate.swift in Sources */,
 				A903073C25A070B500743291 /* SceneDelegate.swift in Sources */,
-				A903073E25A070B500743291 /* ContentView.swift in Sources */,
+				A903073E25A070B500743291 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

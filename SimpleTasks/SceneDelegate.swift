@@ -1,22 +1,37 @@
-import UIKit
+import ComposableArchitecture
 import SwiftUI
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
+    func scene(
+      _ scene: UIScene,
+      willConnectTo session: UISceneSession,
+      options connectionOptions: UIScene.ConnectionOptions
+    ) {
+      self.window = (scene as? UIWindowScene).map(UIWindow.init(windowScene:))
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        let store = Store(
+            initialState: LoginState(email: "", password: ""),
+            reducer: loginReducer,
+            environment: LoginEnvironment()
+        )
+        let loginView = LoginView(store: store)
 
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
+        self.window?.rootViewController = UIHostingController(
+          rootView: loginView
+        )
 
-        // Use a UIHostingController as window root view controller.
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
-            self.window = window
-            window.makeKeyAndVisible()
-        }
+        self.window?.makeKeyAndVisible()
     }
 }
 
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    true
+  }
+}

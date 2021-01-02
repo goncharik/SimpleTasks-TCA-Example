@@ -14,6 +14,8 @@
 		A903074625A070B700743291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A903074425A070B700743291 /* LaunchScreen.storyboard */; };
 		A903074F25A070EF00743291 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = A903074E25A070EF00743291 /* ComposableArchitecture */; };
 		A9781FEA25A0D8B1002D3760 /* TasksClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FE925A0D8B1002D3760 /* TasksClient.swift */; };
+		A9781FEE25A10AC0002D3760 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = A9781FED25A10AC0002D3760 /* KeychainAccess */; };
+		A9781FF125A10AD4002D3760 /* KeychainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FF025A10AD4002D3760 /* KeychainClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,7 @@
 		A903074525A070B700743291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A903074725A070B700743291 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9781FE925A0D8B1002D3760 /* TasksClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksClient.swift; sourceTree = "<group>"; };
+		A9781FF025A10AD4002D3760 /* KeychainClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9781FEE25A10AC0002D3760 /* KeychainAccess in Frameworks */,
 				A903074F25A070EF00743291 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				A9781FE925A0D8B1002D3760 /* TasksClient.swift */,
+				A9781FF025A10AD4002D3760 /* KeychainClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -103,6 +108,7 @@
 			name = SimpleTasks;
 			packageProductDependencies = (
 				A903074E25A070EF00743291 /* ComposableArchitecture */,
+				A9781FED25A10AC0002D3760 /* KeychainAccess */,
 			);
 			productName = SimpleTasks;
 			productReference = A903073625A070B500743291 /* SimpleTasks.app */;
@@ -134,6 +140,7 @@
 			mainGroup = A903072D25A070B500743291;
 			packageReferences = (
 				A903074D25A070EF00743291 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				A9781FEC25A10AC0002D3760 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = A903073725A070B500743291 /* Products */;
 			projectDirPath = "";
@@ -164,6 +171,7 @@
 			files = (
 				A9781FEA25A0D8B1002D3760 /* TasksClient.swift in Sources */,
 				A903073C25A070B500743291 /* SceneDelegate.swift in Sources */,
+				A9781FF125A10AD4002D3760 /* KeychainClient.swift in Sources */,
 				A903073E25A070B500743291 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,6 +376,14 @@
 				minimumVersion = 0.9.0;
 			};
 		};
+		A9781FEC25A10AC0002D3760 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -375,6 +391,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A903074D25A070EF00743291 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		A9781FED25A10AC0002D3760 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9781FEC25A10AC0002D3760 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

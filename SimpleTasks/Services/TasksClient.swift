@@ -1,6 +1,7 @@
 import Combine
 import ComposableArchitecture
 import Foundation
+import KeychainAccess
 
 // MARK: - API models
 
@@ -19,6 +20,14 @@ struct Task: Decodable, Equatable, Identifiable {
     var title: String
     var dueBy: TimeInterval
     var priority: TaskPriority
+}
+
+struct TasksResponse: Decodable {
+    let tasks: [Task]
+}
+
+struct TaskResponse: Decodable {
+    let task: Task
 }
 
 struct TaskRequest: Encodable {
@@ -59,30 +68,98 @@ extension TasksClient {
             return URLSession.shared.dataTaskPublisher(for: request)
                 .mapToDataWithFailure()
                 .decode(type: AuthToken.self, decoder: JSONDecoder())
-                .mapError { error in
-                    if let error = error as? Failure {
-                        return error
-                    }
-                    return Failure(message: "Unknown error")
-                }
+                .mapDefaultError()
                 .eraseToEffect()
         },
         register: { (email, password) -> Effect<AuthToken, Failure> in
-            fatalError()
+            var request = URLRequest.jsonRequest(
+                url: URL(string: baseUrl + "/users")!,
+                method: .post,
+                body: ["email": email, "password": password]
+            )
+
+            return URLSession.shared.dataTaskPublisher(for: request)
+                .mapToDataWithFailure()
+                .decode(type: AuthToken.self, decoder: JSONDecoder())
+                .mapDefaultError()
+                .eraseToEffect()
         },
         tasks: { (pageNumber) -> Effect<[Task], Failure> in
-            fatalError()
+            let token = Keychain.live.token
+            var request = URLRequest.jsonRequest(
+                url: URL(string: baseUrl + "/tasks?page=\(pageNumber)")!,
+                method: .get,
+                body: ["page": pageNumber]
+            )
+
+            return URLSession.shared.dataTaskPublisher(for: request)
+                .mapToDataWithFailure()
+                .decode(type: TasksResponse.self, decoder: JSONDecoder())
+                .map(\.tasks)
+                .mapDefaultError()
+                .eraseToEffect()
         },
         createTask: { (taskRequest) -> Effect<Task, Failure> in
-            fatalError()
+            let token = Keychain.live.token
+            var request = URLRequest.jsonRequest(
+                url: URL(string: baseUrl + "/tasks")!,
+                method: .post,
+                body: taskRequest
+            )
+
+            return URLSession.shared.dataTaskPublisher(for: request)
+                .mapToDataWithFailure()
+                .decode(type: TaskResponse.self, decoder: JSONDecoder())
+                .map(\.task)
+                .mapDefaultError()
+                .eraseToEffect()
         },
         updateTask: { (id, taskRequest) -> Effect<Task, Failure> in
-            fatalError()
+            let token = Keychain.live.token
+            var request = URLRequest.jsonRequest(
+                url: URL(string: baseUrl + "/tasks/\(id)")!,
+                method: .put,
+                body: taskRequest
+            )
+
+            return URLSession.shared.dataTaskPublisher(for: request)
+                .mapToDataWithFailure()
+                .decode(type: TaskResponse.self, decoder: JSONDecoder())
+                .map(\.task)
+                .mapDefaultError()
+                .eraseToEffect()
         },
         deleteTask: { (id) -> Effect<Void, Failure> in
-            fatalError()
+            let token = Keychain.live.token
+            var request = URLRequest.jsonRequest(
+                url: URL(string: baseUrl + "/tasks/\(id)")!,
+                method: .delete,
+                body: ""
+            )
+
+            return URLSession.shared.dataTaskPublisher(for: request)
+                .mapToDataWithFailure()
+                .map { _ in () }
+                .mapDefaultError()
+                .eraseToEffect()
         }
     )
+
+    static var mock: TasksClient {
+        TasksClient { _,_ in
+            fatalError("Unmocked")
+        } register: { _,_ in
+            fatalError("Unmocked")
+        } tasks: { _ in
+            fatalError("Unmocked")
+        } createTask: { _ in
+            fatalError("Unmocked")
+        } updateTask: { _,_ in
+            fatalError("Unmocked")
+        } deleteTask: { _ in
+            fatalError("Unmocked")
+        }
+    }
 }
 
 // MARK: - Helpers
@@ -99,6 +176,17 @@ extension URLSession.DataTaskPublisher {
     }
 }
 
+extension Publisher {
+    func mapDefaultError() -> Publishers.MapError<Self, TasksClient.Failure> {
+        mapError { error in
+            if let error = error as? TasksClient.Failure {
+                return error
+            }
+            return TasksClient.Failure(message: "Unknown error")
+        }
+    }
+}
+
 enum URLMethod: String {
     case get = "GET"
     case post = "POST"
@@ -107,11 +195,15 @@ enum URLMethod: String {
 }
 
 extension URLRequest {
-    static func jsonRequest<Body: Encodable>(url: URL, method: URLMethod, body: Body) -> URLRequest {
+    static func jsonRequest<Body: Encodable>(url: URL, method: URLMethod, body: Body, token: String? = nil) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try? JSONEncoder().encode(body)
+
+        if let token = token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         return request
     }
 }

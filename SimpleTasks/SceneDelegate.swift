@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import KeychainAccess
 import SwiftUI
 import UIKit
 
@@ -14,7 +15,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let store = Store(
             initialState: LoginState(email: "", password: ""),
             reducer: loginReducer,
-            environment: LoginEnvironment()
+            environment: LoginEnvironment(
+                tasksClient: TasksClient.live,
+                keychain: Keychain.live,
+                mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+            )
         )
         let loginView = LoginView(store: store)
 

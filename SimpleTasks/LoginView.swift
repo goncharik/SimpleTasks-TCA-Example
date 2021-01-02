@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import KeychainAccess
 import SwiftUI
 
 // MARK: - Login domain
@@ -10,8 +9,15 @@ enum AuthType: Equatable {
 }
 
 struct LoginState: Equatable {
-    var email: String
-    var password: String
+    var email: String = ""
+    var password: String = ""
+
+    var isLoading: Bool = false
+    var alert: AlertState<LoginAction>? = nil
+
+    var isValidInput: Bool {
+        !email.isEmpty && !password.isEmpty
+    }
 }
 
 enum LoginAction: Equatable {
@@ -20,11 +26,11 @@ enum LoginAction: Equatable {
     case logInTapped
     case registerTapped
     case authResponse(Result<AuthToken, TasksClient.Failure>)
+    case alertDismissed
 }
 
 struct LoginEnvironment {
     var tasksClient: TasksClient
-    var keychain: Keychain
     var mainQueue: AnySchedulerOf<DispatchQueue>
 }
 
@@ -32,13 +38,37 @@ struct LoginEnvironment {
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnvironment> { state, action, environment in
     struct LoginId: Hashable {}
-
-    if action == .logInTapped {
-        return environment.tasksClient.login("sample@site.com", "0123456")
+    struct RegisterId: Hashable {}
+    
+    switch action {
+    case let .emailChanged(email):
+        state.email = email
+    case let .passwordChanged(password):
+        state.password = password
+    case .logInTapped:
+        state.isLoading = true
+        return environment.tasksClient.login(state.email, state.password)
             .receive(on: environment.mainQueue)
             .catchToEffect()
             .map(LoginAction.authResponse)
             .cancellable(id: LoginId(), cancelInFlight: true)
+    case .registerTapped:
+        state.isLoading = true
+        return environment.tasksClient.register(state.email, state.password)
+            .receive(on: environment.mainQueue)
+            .catchToEffect()
+            .map(LoginAction.authResponse)
+            .cancellable(id: RegisterId(), cancelInFlight: true)
+    case let .authResponse(result):
+        state.isLoading = false
+        switch result {
+        case .success:
+            ()
+        case let .failure(failure):
+            state.alert = AlertState(title: LocalizedStringKey(failure.message))
+        }
+    case .alertDismissed:
+        state.alert = nil
     }
     return .none
 }
@@ -55,7 +85,7 @@ struct LoginView: View {
                 VStack(spacing: 16) {
                     TextField(
                         "Email",
-                        text: .constant("")
+                        text: viewStore.binding(get: \.email, send: LoginAction.emailChanged)
                     )
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
@@ -63,24 +93,28 @@ struct LoginView: View {
 
                     SecureField(
                         "Password",
-                        text: .constant("")
+                        text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged)
                     )
                     .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                    Button("LOG IN", action: {})
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
+                    Button("LOG IN", action: {
+                        viewStore.send(.logInTapped)
+                    })
+                    .disabled(!viewStore.isValidInput)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
 
-                    Button("Register", action: {})
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
+                    Button("Register", action: {
+                        viewStore.send(.registerTapped)
+                    })
+                    .disabled(!viewStore.isValidInput)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
                 }
                 .padding()
-                .onAppear {
-                    viewStore.send(.logInTapped)
-                }
             }
             .padding()
+            .alert(self.store.scope(state: \.alert), dismiss: .alertDismissed)
         }
     }
 }
@@ -88,11 +122,10 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         let store = Store(
-            initialState: LoginState(email: "", password: ""),
+            initialState: LoginState(),
             reducer: loginReducer,
             environment: LoginEnvironment(
                 tasksClient: TasksClient.mock,
-                keychain: Keychain.mock,
                 mainQueue: DispatchQueue.main.eraseToAnyScheduler()
             )
         )

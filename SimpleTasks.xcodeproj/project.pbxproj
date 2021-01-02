@@ -16,6 +16,8 @@
 		A9781FEA25A0D8B1002D3760 /* TasksClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FE925A0D8B1002D3760 /* TasksClient.swift */; };
 		A9781FEE25A10AC0002D3760 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = A9781FED25A10AC0002D3760 /* KeychainAccess */; };
 		A9781FF125A10AD4002D3760 /* KeychainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FF025A10AD4002D3760 /* KeychainClient.swift */; };
+		A9781FF525A12713002D3760 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FF425A12713002D3760 /* AppView.swift */; };
+		A9781FF825A12830002D3760 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FF725A12830002D3760 /* TasksView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		A903074725A070B700743291 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9781FE925A0D8B1002D3760 /* TasksClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksClient.swift; sourceTree = "<group>"; };
 		A9781FF025A10AD4002D3760 /* KeychainClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainClient.swift; sourceTree = "<group>"; };
+		A9781FF425A12713002D3760 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		A9781FF725A12830002D3760 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 			children = (
 				A903073B25A070B500743291 /* SceneDelegate.swift */,
 				A903073D25A070B500743291 /* LoginView.swift */,
+				A9781FF425A12713002D3760 /* AppView.swift */,
+				A9781FF725A12830002D3760 /* TasksView.swift */,
 				A9781FE625A07762002D3760 /* Services */,
 				A903073F25A070B700743291 /* Assets.xcassets */,
 				A903074425A070B700743291 /* LaunchScreen.storyboard */,
@@ -170,8 +176,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9781FEA25A0D8B1002D3760 /* TasksClient.swift in Sources */,
+				A9781FF825A12830002D3760 /* TasksView.swift in Sources */,
 				A903073C25A070B500743291 /* SceneDelegate.swift in Sources */,
 				A9781FF125A10AD4002D3760 /* KeychainClient.swift in Sources */,
+				A9781FF525A12713002D3760 /* AppView.swift in Sources */,
 				A903073E25A070B500743291 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

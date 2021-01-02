@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		A903074025A070B700743291 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A903073F25A070B700743291 /* Assets.xcassets */; };
 		A903074325A070B700743291 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A903074225A070B700743291 /* Preview Assets.xcassets */; };
 		A903074625A070B700743291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A903074425A070B700743291 /* LaunchScreen.storyboard */; };
+		A903074F25A070EF00743291 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = A903074E25A070EF00743291 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A903074F25A070EF00743291 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +93,9 @@
 			dependencies = (
 			);
 			name = SimpleTasks;
+			packageProductDependencies = (
+				A903074E25A070EF00743291 /* ComposableArchitecture */,
+			);
 			productName = SimpleTasks;
 			productReference = A903073625A070B500743291 /* SimpleTasks.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +124,9 @@
 				Base,
 			);
 			mainGroup = A903072D25A070B500743291;
+			packageReferences = (
+				A903074D25A070EF00743291 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = A903073725A070B500743291 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -216,7 +224,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -270,7 +278,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -342,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A903074D25A070EF00743291 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A903074E25A070EF00743291 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A903074D25A070EF00743291 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A903072E25A070B500743291 /* Project object */;
 }

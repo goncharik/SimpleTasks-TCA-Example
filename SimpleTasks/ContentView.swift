@@ -1,11 +1,3 @@
-//
-//  ContentView.swift
-//  SimpleTasks
-//
-//  Created by Eugene Honcharenko on 1/2/21.
-//  Copyright © 2021 Honcharenko. All rights reserved.
-//
-
 import SwiftUI
 
 struct ContentView: View {

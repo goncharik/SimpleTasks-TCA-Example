@@ -18,8 +18,7 @@ enum LoginAction: Equatable {
     case passwordChanged(String)
     case logInTapped
     case registerTapped
-    case authSucceed
-    case authError(String)
+    case authResponse(Result<AuthToken, TasksClient.Failure>)
 }
 
 struct LoginEnvironment {
@@ -28,9 +27,18 @@ struct LoginEnvironment {
 // MARK: - Login reducer
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnvironment> { state, action, environment in
+    struct LoginId: Hashable {}
+
+    if action == .logInTapped {
+        return TasksClient.live.login("sample@site.com", "0123456")
+            .receive(on: DispatchQueue.main.eraseToAnyScheduler())
+            .catchToEffect()
+            .map(LoginAction.authResponse)
+            .cancellable(id: LoginId(), cancelInFlight: true)
+    }
     return .none
 }
-
+.debug()
 // MARK: - Login View
 
 struct LoginView: View {
@@ -64,6 +72,9 @@ struct LoginView: View {
                         .frame(height: 50)
                 }
                 .padding()
+                .onAppear {
+                    viewStore.send(.logInTapped)
+                }
             }
             .padding()
         }

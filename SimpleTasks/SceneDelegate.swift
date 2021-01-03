@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let appState: AppState
 
         if keychain.token != nil {
-            appState = .init(tasks: TasksState(tasks: [Task(id: 1, title: "Test", dueBy: Date().timeIntervalSince1970, priority: .medium)]))
+            appState = .init(tasks: TasksState())
         } else {
             appState = .init(login: LoginState())
         }

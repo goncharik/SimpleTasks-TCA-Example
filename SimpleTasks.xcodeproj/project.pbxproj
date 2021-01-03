@@ -19,6 +19,8 @@
 		A9781FF525A12713002D3760 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FF425A12713002D3760 /* AppView.swift */; };
 		A9781FF825A12830002D3760 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FF725A12830002D3760 /* TasksView.swift */; };
 		A9781FFB25A22E87002D3760 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FFA25A22E87002D3760 /* TaskView.swift */; };
+		A9781FFF25A26F15002D3760 /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = A9781FFE25A26F15002D3760 /* SwiftUIRefresh */; };
+		A978200325A27B5A002D3760 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A978200225A27B5A002D3760 /* ActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,7 @@
 		A9781FF425A12713002D3760 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		A9781FF725A12830002D3760 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		A9781FFA25A22E87002D3760 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		A978200225A27B5A002D3760 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9781FFF25A26F15002D3760 /* SwiftUIRefresh in Frameworks */,
 				A9781FEE25A10AC0002D3760 /* KeychainAccess in Frameworks */,
 				A903074F25A070EF00743291 /* ComposableArchitecture in Frameworks */,
 			);
@@ -73,6 +77,7 @@
 				A9781FF425A12713002D3760 /* AppView.swift */,
 				A9781FF725A12830002D3760 /* TasksView.swift */,
 				A9781FFA25A22E87002D3760 /* TaskView.swift */,
+				A978200125A27B49002D3760 /* Helpers */,
 				A9781FE625A07762002D3760 /* Services */,
 				A903073F25A070B700743291 /* Assets.xcassets */,
 				A903074425A070B700743291 /* LaunchScreen.storyboard */,
@@ -99,6 +104,14 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		A978200125A27B49002D3760 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A978200225A27B5A002D3760 /* ActivityIndicator.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -118,6 +131,7 @@
 			packageProductDependencies = (
 				A903074E25A070EF00743291 /* ComposableArchitecture */,
 				A9781FED25A10AC0002D3760 /* KeychainAccess */,
+				A9781FFE25A26F15002D3760 /* SwiftUIRefresh */,
 			);
 			productName = SimpleTasks;
 			productReference = A903073625A070B500743291 /* SimpleTasks.app */;
@@ -150,6 +164,7 @@
 			packageReferences = (
 				A903074D25A070EF00743291 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				A9781FEC25A10AC0002D3760 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				A9781FFD25A26F15002D3760 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */,
 			);
 			productRefGroup = A903073725A070B500743291 /* Products */;
 			projectDirPath = "";
@@ -182,6 +197,7 @@
 				A9781FFB25A22E87002D3760 /* TaskView.swift in Sources */,
 				A9781FF825A12830002D3760 /* TasksView.swift in Sources */,
 				A903073C25A070B500743291 /* SceneDelegate.swift in Sources */,
+				A978200325A27B5A002D3760 /* ActivityIndicator.swift in Sources */,
 				A9781FF125A10AD4002D3760 /* KeychainClient.swift in Sources */,
 				A9781FF525A12713002D3760 /* AppView.swift in Sources */,
 				A903073E25A070B500743291 /* LoginView.swift in Sources */,
@@ -396,6 +412,14 @@
 				minimumVersion = 4.2.1;
 			};
 		};
+		A9781FFD25A26F15002D3760 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/timbersoftware/SwiftUIRefresh.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -408,6 +432,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A9781FEC25A10AC0002D3760 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
+		};
+		A9781FFE25A26F15002D3760 /* SwiftUIRefresh */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9781FFD25A26F15002D3760 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */;
+			productName = SwiftUIRefresh;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

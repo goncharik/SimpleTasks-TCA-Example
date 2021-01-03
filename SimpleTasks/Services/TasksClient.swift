@@ -29,11 +29,18 @@ struct Task: Decodable, Equatable, Identifiable {
     }
 }
 
-struct TasksResponse: Decodable {
-    let tasks: IdentifiedArrayOf<Task>
+struct ListMeta: Decodable, Equatable {
+    let current: Int
+    let limit: Int
+    let count: Int
 }
 
-struct TaskResponse: Decodable {
+struct TasksResponse: Decodable, Equatable {
+    let tasks: IdentifiedArrayOf<Task>
+    let meta: ListMeta
+}
+
+struct TaskResponse: Decodable, Equatable {
     let task: Task
 }
 
@@ -49,7 +56,7 @@ struct TasksClient {
     var login: (String, String) -> Effect<AuthToken, Failure>
     var register: (String, String) -> Effect<AuthToken, Failure>
 
-    var tasks: (Int) -> Effect<IdentifiedArrayOf<Task>, Failure>
+    var tasks: (Int) -> Effect<TasksResponse, Failure>
     var createTask: (TaskRequest) -> Effect<Task, Failure>
     var updateTask: (Int, TaskRequest) -> Effect<Task, Failure>
     var deleteTask: (Int) -> Effect<Void, Failure>
@@ -92,7 +99,7 @@ extension TasksClient {
                 .eraseToEffect()
         },
 
-        tasks: { (pageNumber) -> Effect<IdentifiedArrayOf<Task>, Failure> in
+        tasks: { (pageNumber) -> Effect<TasksResponse, Failure> in
             let token = Keychain.live.token
             var request = URLRequest.jsonRequest(
                 url: URL(string: baseUrl + "/tasks?page=\(pageNumber)")!,
@@ -102,16 +109,7 @@ extension TasksClient {
 
             return URLSession.shared.dataTaskPublisher(for: request)
                 .mapToDataWithFailure()
-
-                .print()
-                .map {
-                    print(String.init(data: $0, encoding: .utf8))
-                    return $0
-                }
                 .decode(type: TasksResponse.self, decoder: JSONDecoder())
-                .print()
-
-                .map(\.tasks)
                 .mapDefaultError()
                 .eraseToEffect()
         },

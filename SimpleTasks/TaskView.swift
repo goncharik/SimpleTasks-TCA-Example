@@ -19,9 +19,33 @@ struct TaskView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack(alignment: .leading) {
+                Divider()
                 Text(viewStore.title)
                     .multilineTextAlignment(.leading)
+                    .font(.title)
                     .padding()
+                Divider().padding(.horizontal)
+                HStack {
+                    Text("Priority:")
+                    Spacer()
+                    Text(viewStore.priority.rawValue)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+                Divider().padding(.horizontal)
+                HStack {
+                    Text("Due:")
+                    Spacer()
+                    if let dueBy = viewStore.dueBy {
+                        Text(
+                            dateFormatter.string(from: Date(timeIntervalSince1970: dueBy))
+                        )
+                    } else {
+                        Text("Unspecified")
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 4)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .navigationBarTitle("Task Details")
@@ -32,6 +56,11 @@ struct TaskView: View {
     }
 }
 
+let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    return formatter
+}()
 
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {

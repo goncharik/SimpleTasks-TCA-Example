@@ -39,7 +39,7 @@ struct LoginEnvironment {
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnvironment> { state, action, environment in
     struct LoginId: Hashable {}
     struct RegisterId: Hashable {}
-    
+
     switch action {
     case let .emailChanged(email):
         state.email = email
@@ -72,7 +72,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnvironment> { state, a
     }
     return .none
 }
-.debug()
+
 // MARK: - Login View
 
 struct LoginView: View {
@@ -81,7 +81,7 @@ struct LoginView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack {
-                Text("Sign in").font(.title).bold().padding()
+                Text("Sign in").font(.title).bold()
                 VStack(spacing: 16) {
                     TextField(
                         "Email",
@@ -97,23 +97,31 @@ struct LoginView: View {
                     )
                     .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                    Button("LOG IN", action: {
+                    Button(action: {
                         viewStore.send(.logInTapped)
-                    })
+                    }) {
+                        Text("Log in")
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .border(Color.blue)
+                    }
                     .disabled(!viewStore.isValidInput)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
 
-                    Button("Register", action: {
+                    Button(action: {
                         viewStore.send(.registerTapped)
-                    })
+                    }) {
+                        Text("Register")
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .border(Color.blue)
+                    }
                     .disabled(!viewStore.isValidInput)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
+
                 }
                 .padding()
             }
             .padding()
+            .padding(.bottom, 60)
             .alert(self.store.scope(state: \.alert), dismiss: .alertDismissed)
         }
     }

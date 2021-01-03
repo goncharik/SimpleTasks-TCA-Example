@@ -2,6 +2,8 @@ import ComposableArchitecture
 import KeychainAccess
 import SwiftUI
 
+// MARK: - Root logic
+
 struct AppState: Equatable {
     var login: LoginState?
     var tasks: TasksState?
@@ -32,7 +34,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     tasksReducer.optional().pullback(
         state: \.tasks,
         action: /AppAction.tasks,
-        environment: { _ in TasksEnvironment() }
+        environment: { TasksEnvironment(tasksClient: $0.tasksClient, mainQueue: $0.mainQueue) }
     ),
     Reducer { state, action, environment in
         switch action {
@@ -57,6 +59,8 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     }
 )
 
+// MARK: - Root view
+
 struct AppView: View {
     let store: Store<AppState, AppAction>
 
@@ -76,3 +80,4 @@ struct AppView: View {
         }
     }
 }
+

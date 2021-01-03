@@ -11,19 +11,26 @@ struct AuthToken: Decodable, Equatable {
 
 enum TaskPriority: String, Codable {
     case low = "Low"
-    case normal = "Normal"
+    case medium = "Normal"
     case high = "High"
 }
 
 struct Task: Decodable, Equatable, Identifiable {
     var id: Int
     var title: String
-    var dueBy: TimeInterval
+    var dueBy: TimeInterval?
     var priority: TaskPriority
+
+    init(id: Int, title: String, dueBy: TimeInterval?, priority: TaskPriority) {
+        self.id = id
+        self.title = title
+        self.dueBy = dueBy
+        self.priority = priority
+    }
 }
 
 struct TasksResponse: Decodable {
-    let tasks: [Task]
+    let tasks: IdentifiedArrayOf<Task>
 }
 
 struct TaskResponse: Decodable {
@@ -32,7 +39,7 @@ struct TaskResponse: Decodable {
 
 struct TaskRequest: Encodable {
     var title: String
-    var dueBy: TimeInterval
+    var dueBy: TimeInterval?
     var priority: TaskPriority
 }
 
@@ -42,7 +49,7 @@ struct TasksClient {
     var login: (String, String) -> Effect<AuthToken, Failure>
     var register: (String, String) -> Effect<AuthToken, Failure>
 
-    var tasks: (Int) -> Effect<[Task], Failure>
+    var tasks: (Int) -> Effect<IdentifiedArrayOf<Task>, Failure>
     var createTask: (TaskRequest) -> Effect<Task, Failure>
     var updateTask: (Int, TaskRequest) -> Effect<Task, Failure>
     var deleteTask: (Int) -> Effect<Void, Failure>
@@ -84,17 +91,26 @@ extension TasksClient {
                 .mapDefaultError()
                 .eraseToEffect()
         },
-        tasks: { (pageNumber) -> Effect<[Task], Failure> in
+
+        tasks: { (pageNumber) -> Effect<IdentifiedArrayOf<Task>, Failure> in
             let token = Keychain.live.token
             var request = URLRequest.jsonRequest(
                 url: URL(string: baseUrl + "/tasks?page=\(pageNumber)")!,
                 method: .get,
-                body: ["page": pageNumber]
+                token: token
             )
 
             return URLSession.shared.dataTaskPublisher(for: request)
                 .mapToDataWithFailure()
+
+                .print()
+                .map {
+                    print(String.init(data: $0, encoding: .utf8))
+                    return $0
+                }
                 .decode(type: TasksResponse.self, decoder: JSONDecoder())
+                .print()
+
                 .map(\.tasks)
                 .mapDefaultError()
                 .eraseToEffect()
@@ -104,7 +120,8 @@ extension TasksClient {
             var request = URLRequest.jsonRequest(
                 url: URL(string: baseUrl + "/tasks")!,
                 method: .post,
-                body: taskRequest
+                body: taskRequest,
+                token: token
             )
 
             return URLSession.shared.dataTaskPublisher(for: request)
@@ -119,7 +136,8 @@ extension TasksClient {
             var request = URLRequest.jsonRequest(
                 url: URL(string: baseUrl + "/tasks/\(id)")!,
                 method: .put,
-                body: taskRequest
+                body: taskRequest,
+                token: token
             )
 
             return URLSession.shared.dataTaskPublisher(for: request)
@@ -134,7 +152,7 @@ extension TasksClient {
             var request = URLRequest.jsonRequest(
                 url: URL(string: baseUrl + "/tasks/\(id)")!,
                 method: .delete,
-                body: ""
+                token: token
             )
 
             return URLSession.shared.dataTaskPublisher(for: request)
@@ -182,7 +200,7 @@ extension Publisher {
             if let error = error as? TasksClient.Failure {
                 return error
             }
-            return TasksClient.Failure(message: "Unknown error")
+            return TasksClient.Failure(message: error.localizedDescription)
         }
     }
 }
@@ -195,6 +213,17 @@ enum URLMethod: String {
 }
 
 extension URLRequest {
+    static func jsonRequest(url: URL, method: URLMethod, token: String? = nil) -> URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if let token = token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        return request
+    }
+
     static func jsonRequest<Body: Encodable>(url: URL, method: URLMethod, body: Body, token: String? = nil) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue

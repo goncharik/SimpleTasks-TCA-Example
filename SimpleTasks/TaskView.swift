@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-enum TaskAction {
+enum TaskAction: Equatable {
     case editTapped
 }
 

@@ -21,6 +21,7 @@
 		A9781FFB25A22E87002D3760 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9781FFA25A22E87002D3760 /* TaskView.swift */; };
 		A9781FFF25A26F15002D3760 /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = A9781FFE25A26F15002D3760 /* SwiftUIRefresh */; };
 		A978200325A27B5A002D3760 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A978200225A27B5A002D3760 /* ActivityIndicator.swift */; };
+		A978200725A292B6002D3760 /* NewTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A978200625A292B6002D3760 /* NewTaskView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		A9781FF725A12830002D3760 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		A9781FFA25A22E87002D3760 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		A978200225A27B5A002D3760 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		A978200625A292B6002D3760 /* NewTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				A9781FF425A12713002D3760 /* AppView.swift */,
 				A9781FF725A12830002D3760 /* TasksView.swift */,
 				A9781FFA25A22E87002D3760 /* TaskView.swift */,
+				A978200625A292B6002D3760 /* NewTaskView.swift */,
 				A978200125A27B49002D3760 /* Helpers */,
 				A9781FE625A07762002D3760 /* Services */,
 				A903073F25A070B700743291 /* Assets.xcassets */,
@@ -195,6 +198,7 @@
 			files = (
 				A9781FEA25A0D8B1002D3760 /* TasksClient.swift in Sources */,
 				A9781FFB25A22E87002D3760 /* TaskView.swift in Sources */,
+				A978200725A292B6002D3760 /* NewTaskView.swift in Sources */,
 				A9781FF825A12830002D3760 /* TasksView.swift in Sources */,
 				A903073C25A070B500743291 /* SceneDelegate.swift in Sources */,
 				A978200325A27B5A002D3760 /* ActivityIndicator.swift in Sources */,

@@ -21,6 +21,9 @@ enum TasksAction: Equatable {
     case scrolledAtBottom
     case addButtonTapped
     case tasksResponse(Result<TasksResponse, TasksClient.Failure>)
+    case delete(IndexSet)
+    case deleteFinished
+    case deleteFailed(Task, String)
     case alertDismissed
 }
 
@@ -33,6 +36,7 @@ struct TasksEnvironment {
 
 let tasksReducer = Reducer<TasksState, TasksAction, TasksEnvironment> { state, action, environment in
     struct TasksId: Hashable {}
+    struct TaskDeleteId: Hashable {}
 
     switch action {
     case .logoutButtonTapped:
@@ -78,11 +82,33 @@ let tasksReducer = Reducer<TasksState, TasksAction, TasksEnvironment> { state, a
         state.isLoading = false
         state.alert = AlertState(title: LocalizedStringKey(failure.message))
         return .none
+    case let .delete(indexSet):
+        if let offset = indexSet.reversed().first {
+            let task = state.tasks.remove(at: offset)
+            return environment.tasksClient.deleteTask(task.id)
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map {
+                    switch $0 {
+                    case .success():
+                        return .deleteFinished
+                    case let .failure(failure):
+                        return .deleteFailed(task, failure.message)
+                    }
+                }
+        }
+        return .none
+    case let .deleteFailed(task, message):
+        state.tasks.insert(task, at: 0)
+        state.alert = AlertState(title: LocalizedStringKey(message))
+        return .none
     case .alertDismissed:
         state.alert = nil
         return .none
+    case .deleteFinished:
+        return .none
     }
-}.debugActions()
+}
 
 // MARK: - Tasks view
 
@@ -106,6 +132,8 @@ struct TasksView: View {
                             }
                         })
                     }
+                    .onDelete { viewStore.send(.delete($0)) }
+
                     if viewStore.isLoading {
                         HStack {
                             Spacer()
@@ -121,7 +149,11 @@ struct TasksView: View {
             .navigationBarTitle("Tasks")
             .navigationBarItems(
                 leading: Button("Logout") { viewStore.send(.logoutButtonTapped) },
-                trailing: Button("Add") { viewStore.send(.addButtonTapped) }
+                trailing: NavigationLink(
+                    destination: NewTaskView(),
+                    label: {
+                        Text("Add")
+                    })
             )
             .onAppear(perform: {
                 viewStore.send(.viewAppeared)

@@ -9,7 +9,7 @@ struct AuthToken: Decodable, Equatable {
     let token: String
 }
 
-enum TaskPriority: String, Codable {
+enum TaskPriority: String, CaseIterable, Hashable, Codable {
     case low = "Low"
     case medium = "Normal"
     case high = "High"
@@ -46,7 +46,7 @@ struct TaskResponse: Decodable, Equatable {
 
 struct TaskRequest: Encodable {
     var title: String
-    var dueBy: TimeInterval?
+    var dueBy: Int?
     var priority: TaskPriority
 }
 
@@ -126,6 +126,7 @@ extension TasksClient {
                 .mapToDataWithFailure()
                 .decode(type: TaskResponse.self, decoder: JSONDecoder())
                 .map(\.task)
+                .print()
                 .mapDefaultError()
                 .eraseToEffect()
         },
